@@ -1,8 +1,8 @@
 import './MessagePanel.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import socket from '../socket'
 
-const MessagePanel = ({ user }) => {
+const MessagePanel = ({ user, updateUsers }) => {
     const [content, setContent] = useState('')
     console.log(user)
 
@@ -20,10 +20,15 @@ const MessagePanel = ({ user }) => {
             user.messages.push({
                 content,
                 fromSelf: true
-            }) //i'll probably have to feed that back into the all users state via setUsers???? because we would want to have this information there, too
+            })
+
+            updateUsers(user)
+
             console.log(user)
         }
     }
+
+
 
 
     return (
@@ -32,12 +37,12 @@ const MessagePanel = ({ user }) => {
                 {user.connected ? <i className='icon.connected'> {user.username} </i> : <i className='icon'>{user.username}</i>}
             </div>
             <ul className='messages'>
-                {user.messages.map((message, index) => {
+                {user.messages.map((message, index) => (
                     <li key={index} className='message'>
                         {message.content} <br />
                         {message.fromSelf ? 'you' : user.username}
                     </li>
-                })}
+                ))}
             </ul>
             <form onSubmit={handleSubmit}>
 
@@ -45,22 +50,9 @@ const MessagePanel = ({ user }) => {
 
                 <input type="submit" value="Submit" />
             </form>
-
-            {/* input field */}
         </>
     )
 }
 
+export default MessagePanel
 
-// onMessage(content) {
-//     if (this.selectedUser) {
-//         socket.emit("private message", {
-//             content,
-//             to: this.selectedUser.userID,
-//         });
-//         this.selectedUser.messages.push({
-//             content,
-//             fromSelf: true,
-//         });
-//     }
-// }

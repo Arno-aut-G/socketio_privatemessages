@@ -1,33 +1,33 @@
 import { useState } from 'react'
 import socket from '../socket'
 
-const SelectUsername = ({ setUsername }) => {
-    const [input, setInput] = useState('')
+
+
+const SelectUsername = ({ name, setName }) => {
+    const [username, setUsername] = useState('')
+    console.log(username)
 
     const handleChange = (e) => {
-        setInput(e.target.value)
+        setUsername(e.target.value)
     }
-
 
     const handleSubmit = (e) => {
-        input.length > 2 ?
-            (e.preventDefault(),
-                setUsername(input),
-                socket.auth = input,
-                socket.connect())
-            :
-            alert('Provided username null or too short.')
+        e.preventDefault()
+        socket.auth = { username }
+        socket.connect()
+        setName(username)
+
     }
+
+
 
     return (
         <>
             <div className='select-username'>
-                <form>
-                    <label>
-                        Username:
-                        <input type='text' name='username' placeholder='username' onChange={handleChange} />
-                    </label>
-                    <input type='submit' value='Submit' onSubmit={handleSubmit} />
+                <form onSubmit={handleSubmit}>
+                    <input type='text' name='username' placeholder='Username' onChange={handleChange} />
+
+                    <button type='submit'>Submit</ button>
                 </form>
             </div>
         </>

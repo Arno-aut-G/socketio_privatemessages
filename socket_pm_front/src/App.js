@@ -1,18 +1,23 @@
-import logo from './logo.svg';
 import './App.css';
 import Chat from './components/Chat'
+import SelectUsername from './components/SelectUsername'
 import { useState } from 'react'
-import { Browserrouter as Router, Switch, Route } from 'react-router-dom'
 
-function App() {
-  const [username, setUsername] = useState('')
+
+
+const App = () => {
+  const [name, setName] = useState(null)
+  console.log(name)
+
+
+
   return (
     <>
       <div className="App">
-        {username ?
-          <SelectUsername username={username} setUsername={setUsername} />
+        {!name ?
+          <SelectUsername setName={setName} username={name} />
           :
-          <Chat username={username} />
+          <Chat username={name} />
         }
       </div>
     </>
@@ -20,3 +25,4 @@ function App() {
 }
 
 export default App;
+
