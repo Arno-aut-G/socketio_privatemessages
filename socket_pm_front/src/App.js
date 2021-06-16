@@ -4,10 +4,8 @@ import SelectUsername from './components/SelectUsername'
 import { useState } from 'react'
 
 
-
 const App = () => {
   const [name, setName] = useState(null)
-  console.log(name)
 
 
 

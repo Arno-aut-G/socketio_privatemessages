@@ -8,7 +8,6 @@ const Chat = () => {
     const [selectedUser, setSelectedUser] = useState(null)
     const [users, setUsers] = useState([])
 
-
     const dynamProperties = (user) => {
         user.connected = true;
         user.messages = [];
@@ -117,11 +116,11 @@ const Chat = () => {
         <>
             <div className="left-panel">
                 {users.map((user) =>
-                    <User key={user.userID} user={user} selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
+                    <User key={user.userID} user={user} selectedUser={selectedUser} setSelectedUser={setSelectedUser} updateUsers={updateUsers} />
                 )}
             </div>
             <div className="right-panel">
-                {selectedUser ? <MessagePanel user={selectedUser} updateUsers={updateUsers} /> : <p>No messages</p>}
+                {selectedUser ? <MessagePanel user={selectedUser} setSelectedUser={setSelectedUser} updateUsers={updateUsers} /> : <p>No messages</p>}
             </div>
         </>
 

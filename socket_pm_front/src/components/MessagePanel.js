@@ -1,8 +1,8 @@
 import './MessagePanel.css'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import socket from '../socket'
 
-const MessagePanel = ({ user, updateUsers }) => {
+const MessagePanel = ({ user, updateUsers, setSelectedUser }) => {
     const [content, setContent] = useState('')
 
     const handleChange = (e) => {
@@ -20,7 +20,6 @@ const MessagePanel = ({ user, updateUsers }) => {
                 content,
                 fromSelf: true
             })
-
             updateUsers(user)
 
         }
