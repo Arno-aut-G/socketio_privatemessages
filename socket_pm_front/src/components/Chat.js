@@ -4,7 +4,7 @@ import socket from '../socket'
 import User from './User'
 import MessagePanel from './MessagePanel'
 
-const Chat = ({ username }) => {
+const Chat = () => {
     const [selectedUser, setSelectedUser] = useState(null)
     const [users, setUsers] = useState([])
 
@@ -15,11 +15,9 @@ const Chat = ({ username }) => {
         user.hasNewMessages = false;
     }
 
-    const updateUsers = (user) => { //this probably not working properly
-        setUsers(users.map(userObject =>
-            userObject.userID === user.userID
-                ? user
-                : userObject))
+    const updateUsers = (user) => {
+        let updatedUsers = users.map(userObject => userObject.userID === user.userID ? user : userObject)
+        setUsers(updatedUsers)
     }
 
 
@@ -39,13 +37,12 @@ const Chat = ({ username }) => {
                 if (a.username < b.username) return -1;
                 return a.username > b.username ? 1 : 0;
             });
-            console.log(users)
-            setUsers(users)
+            setUsers(users) //this should be fine. i'm not modifying the state here. users come from the server
         });
 
         socket.on("connect", () => {
             //add new users to the users state (for own connection)
-            let newUsersArray = users
+            let newUsersArray = users.map(user => ({ ...user }))
             newUsersArray.forEach((user) => {
                 if (user.self) {
                     user.connected = true;
@@ -56,7 +53,7 @@ const Chat = ({ username }) => {
 
         socket.on("disconnect", () => {
             //set disconnected user status for the users state (for own connection)
-            let disconnUsersArray = users
+            let disconnUsersArray = users.map(user => ({ ...user }))
             disconnUsersArray.forEach((user) => {
                 if (user.self) {
                     user.connected = false;
@@ -73,9 +70,9 @@ const Chat = ({ username }) => {
 
         socket.on("user disconnected", (id) => {
             //set disconnected user status for the users state
-            let disconnUsers = users
+            let disconnUsers = users.map(user => ({ ...user }))
             for (let i = 0; i < disconnUsers.length; i++) {
-                const user = disconnUsers[i];
+                const user = disconnUsers[i]
                 if (user.userID === id) {
                     user.connected = false;
                     break;
@@ -85,10 +82,9 @@ const Chat = ({ username }) => {
         });
 
         socket.on("private message", ({ content, from }) => {
-            let mesUsers = users
-            console.log(from)
-            for (let i = 0; i < mesUsers.length; i++) {
-                const user = mesUsers[i];
+            let messageUsers = users.map(user => ({ ...user, messages: [...user.messages] }))
+            for (let i = 0; i < messageUsers.length; i++) {
+                const user = messageUsers[i]
                 if (user.userID === from) {
                     user.messages.push({
                         content,
@@ -100,7 +96,7 @@ const Chat = ({ username }) => {
                     break;
                 }
             }
-            setUsers(mesUsers)
+            setUsers(messageUsers)
         });
 
         return () => {
@@ -113,9 +109,7 @@ const Chat = ({ username }) => {
         }
     }, [selectedUser, users])
 
-    console.log(users)
-    console.log(selectedUser)
-    console.log(socket)
+
 
 
 

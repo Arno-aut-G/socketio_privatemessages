@@ -4,7 +4,6 @@ import socket from '../socket'
 
 const MessagePanel = ({ user, updateUsers }) => {
     const [content, setContent] = useState('')
-    console.log(user)
 
     const handleChange = (e) => {
         setContent(e.target.value)
@@ -24,7 +23,6 @@ const MessagePanel = ({ user, updateUsers }) => {
 
             updateUsers(user)
 
-            console.log(user)
         }
     }
 

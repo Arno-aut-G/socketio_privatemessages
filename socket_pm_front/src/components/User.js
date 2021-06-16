@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import './User.css'
 
 const User = ({ user, selectedUser, setSelectedUser }) => {
-    console.log(user)
-    console.log(selectedUser)
+
+
 
     const handleClick = () => {
         user.hasNewMessages = false
