@@ -1,9 +1,10 @@
 import './MessagePanel.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import socket from '../socket'
 
 const MessagePanel = ({ user, updateUsers, setSelectedUser }) => {
     const [content, setContent] = useState('')
+
 
     const handleChange = (e) => {
         setContent(e.target.value)
@@ -16,16 +17,12 @@ const MessagePanel = ({ user, updateUsers, setSelectedUser }) => {
                 content,
                 to: user.userID
             })
-            user.messages.push({
-                content,
-                fromSelf: true
-            })
-            updateUsers(user)
+            let handleUser = { ...user, messages: [...user.messages, { content, fromSelf: true }] }
+            console.log('handleUser', handleUser);
+            updateUsers(handleUser)
 
         }
     }
-
-
 
 
     return (

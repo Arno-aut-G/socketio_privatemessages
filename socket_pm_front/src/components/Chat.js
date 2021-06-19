@@ -7,6 +7,7 @@ import MessagePanel from './MessagePanel'
 const Chat = () => {
     const [selectedUser, setSelectedUser] = useState(null)
     const [users, setUsers] = useState([])
+    console.log(users.map(e => e.messages))
 
     const dynamProperties = (user) => {
         user.connected = true;
@@ -89,11 +90,11 @@ const Chat = () => {
                         content,
                         fromSelf: false,
                     });
-                    if (user !== selectedUser) {
+                    if (user.userID !== selectedUser.userID) {
                         user.hasNewMessages = true;
                     }
-                    break;
                 }
+
             }
             setUsers(messageUsers)
         });
@@ -106,7 +107,7 @@ const Chat = () => {
             socket.off("user disconnected")
             socket.off("private message")
         }
-    }, [selectedUser, users])
+    }, [users]) //map on the messages (i.e. you have to go INTO the user objects), if there is a new message for a user, then re-render
 
 
 
